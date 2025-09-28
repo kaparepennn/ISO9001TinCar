@@ -734,3 +734,206 @@ body{
   color: #fff;
   padding: 10px;
 }
+
+
+/* ===== Checklist en Análisis ===== */
+.checklist {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.checklist li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border-left: 4px solid var(--gold);
+  border-radius: 8px;
+  color: #eee;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.checklist li:hover {
+  background: rgba(255, 179, 0, 0.1);
+}
+
+.checklist input[type="checkbox"] {
+  accent-color: var(--gold);
+  transform: scale(1.2);
+  cursor: pointer;
+}
+
+.checklist li.done span {
+  text-decoration: line-through;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* ===== Formularios generales (inputs, selects, textarea) ===== */
+.empresa-form input,
+.empresa-form select,
+.empresa-form textarea,
+.usuarios-form input,
+.usuarios-form select,
+.usuarios-form textarea {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.05);
+  color: #fff;
+  font-family: var(--font);
+  width: 100%;
+  box-sizing: border-box;
+  transition: border 0.3s, background 0.3s;
+}
+
+/* Hover */
+.empresa-form input:hover,
+.empresa-form select:hover,
+.empresa-form textarea:hover,
+.usuarios-form input:hover,
+.usuarios-form select:hover,
+.usuarios-form textarea:hover {
+  background: rgba(255,179,0,0.08);
+  border-color: var(--gold);
+}
+
+/* Focus */
+.empresa-form input:focus,
+.empresa-form select:focus,
+.empresa-form textarea:focus,
+.usuarios-form input:focus,
+.usuarios-form select:focus,
+.usuarios-form textarea:focus {
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: 0 0 6px rgba(255,179,0,0.6);
+}
+
+/* Opciones de select */
+.empresa-form select option,
+.usuarios-form select option {
+  background: var(--dark-gray);
+  color: #fff;
+  padding: 10px;
+}
+
+
+/* ===== Capacitación ISO9001 ===== */
+.capacitacion-page {
+  padding: 20px;
+}
+
+.capacitacion-page h1 {
+  color: var(--gold);
+  margin-bottom: 10px;
+}
+
+.capacitacion-page p {
+  color: #ddd;
+  margin-bottom: 20px;
+}
+
+.capacitacion-box {
+  background: #2C2C2C;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.capacitacion-box h2 {
+  color: var(--beige);
+  margin-bottom: 12px;
+}
+
+.btn.disabled {
+  background: #555;
+  color: #aaa;
+  cursor: not-allowed;
+}
+
+.registro-list {
+  list-style: none;
+  padding: 0;
+}
+
+.registro-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 10px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+
+/* ===== Capacitación ISO9001 ===== */
+.capacitacion-page {
+  padding: 20px;
+}
+
+.capacitacion-page h1 {
+  color: var(--gold);
+  margin-bottom: 10px;
+}
+
+.capacitacion-page p {
+  color: #ddd;
+  margin-bottom: 20px;
+}
+
+.capacitacion-box {
+  background: #2C2C2C;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.capacitacion-box h2 {
+  color: var(--beige);
+  margin-bottom: 12px;
+}
+
+.capacitacion-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.capacitacion-form input {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+}
+
+.capacitacion-form input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.btn.disabled {
+  background: #555;
+  color: #aaa;
+  cursor: not-allowed;
+}
+
+.registro-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.registro-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+}
