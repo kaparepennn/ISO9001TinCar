@@ -1,5 +1,14 @@
+# Node / build
 node_modules/
 dist/
+build/
+.vite/
 .env
-.vscode/
+.env.local
 .DS_Store
+.vscode/
+npm-debug.log
+yarn-error.log
+
+# Mac / Windows
+Thumbs.db
