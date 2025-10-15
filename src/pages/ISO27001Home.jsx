@@ -1,61 +1,72 @@
 import React from "react";
+import { Link, Routes, Route } from "react-router-dom";
 import logo from "../assets/logo.png";
-import { useNavigate } from "react-router-dom";
+import Contexto from "./Contexto";
+import Liderazgo from "./Liderazgo";
+import Riesgos from "./Riesgos";
+import Mejora from "./Mejora";
 
 export default function ISO27001Home() {
-  const navigate = useNavigate();
-
-  const handleBack = () => navigate("/dashboard");
-  const handleLogout = () => navigate("/");
-
   return (
     <div className="iso-container">
-      {/* ===== Header ===== */}
+      {/* ===== HEADER SUPERIOR ===== */}
       <header className="iso-header">
         <div className="brand">
-          <img src={logo} alt="TinCar Logo" className="brand-logo" />
-          <span className="brand-title">TinCar - ISO 27001</span>
+          <img src={logo} alt="TinCar" className="brand-logo" />
+          <span className="brand-title">TinCar</span>
         </div>
         <div className="top-actions">
-          <button className="btn ghost" onClick={handleBack}>
+          <button className="btn secondary" onClick={() => window.history.back()}>
             Volver
           </button>
-          <button className="btn primary" onClick={handleLogout}>
+          <button className="btn primary" onClick={() => (window.location.href = "/")}>
             Cerrar sesión
           </button>
         </div>
       </header>
 
-      {/* ===== Dashboard ===== */}
-      <main className="iso-home">
-        <h1>Bienvenido al Sistema de Gestión de Seguridad de la Información (ISO27001)</h1>
-        <p>
-          Aquí encontrarás las herramientas y recursos necesarios para la implementación
-          y seguimiento del Sistema de Gestión de Seguridad de la Información (SGSI)
-          conforme a la norma ISO 27001:2013.
-        </p>
+      {/* ===== CONTENIDO PRINCIPAL ===== */}
+      <main className="iso-main">
+        {/* ===== MENÚ LATERAL ===== */}
+        <aside className="sidebar">
+          <h2>ISO 27001</h2>
+          <ul>
+            <li>
+              <Link to="contexto">Contexto de la organización</Link>
+            </li>
+            <li>
+              <Link to="liderazgo">Liderazgo y compromiso</Link>
+            </li>
+            <li>
+              <Link to="riesgos">Evaluación de riesgos</Link>
+            </li>
+            <li>
+              <Link to="mejora">Mejora continua</Link>
+            </li>
+          </ul>
+        </aside>
 
-        <div className="iso-cards">
-          <div className="iso-card">
-            <h3>Contexto de la organización</h3>
-            <p>Analiza el entorno interno y externo de la organización.</p>
-          </div>
-
-          <div className="iso-card">
-            <h3>Liderazgo y compromiso</h3>
-            <p>Involucra a la alta dirección en la gestión de la seguridad.</p>
-          </div>
-
-          <div className="iso-card">
-            <h3>Evaluación de riesgos</h3>
-            <p>Identifica, analiza y gestiona los riesgos de seguridad.</p>
-          </div>
-
-          <div className="iso-card">
-            <h3>Mejora continua</h3>
-            <p>Implementa acciones para mantener y mejorar el SGSI.</p>
-          </div>
-        </div>
+        {/* ===== ÁREA DE CONTENIDO ===== */}
+        <section className="content">
+          <Routes>
+            <Route
+              index
+              element={
+                <div className="iso-home">
+                  <h1>Dashboard ISO 27001</h1>
+                  <p>
+                    Bienvenido al Sistema de Gestión de Seguridad de la Información.  
+                    Aquí podrás acceder a las diferentes fases de la norma ISO 27001.
+                  </p>
+                </div>
+              }
+            />
+            <Route path="contexto" element={<Contexto />} />
+            <Route path="liderazgo" element={<Liderazgo />} />
+            <Route path="riesgos" element={<Riesgos />} />
+            <Route path="mejora" element={<Mejora />} />
+          </Routes>
+        </section>
       </main>
     </div>
   );

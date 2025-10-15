@@ -11,10 +11,10 @@ import Implementacion from "./pages/Implementacion";
 import Auditoria from "./pages/Auditoria";
 import RegistroEmpresas from "./pages/RegistroEmpresas";
 import UsuariosRoles from "./pages/UsuariosRoles";
-import ISO9001Home from "./pages/ISO9001Home"; 
+import ISO9001Home from "./pages/ISO9001Home";
 import ISO27001Home from "./pages/ISO27001Home"; // 👈 nuevo
 
-// Wrapper para Dashboard con navegación
+// === Wrapper del Dashboard principal ===
 function DashboardWrapper({ user, onLogout }) {
   const navigate = useNavigate();
 
@@ -24,15 +24,16 @@ function DashboardWrapper({ user, onLogout }) {
       onLogout={onLogout}
       onNavigate={(norma) => {
         if (norma === "iso9001") {
-          navigate("/iso9001"); // va a la página principal ISO9001
+          navigate("/iso9001"); // 👉 redirige a ISO9001
         } else if (norma === "iso27001") {
-          navigate("/iso27001"); // 👈 va a ISO27001Home
+          navigate("/iso27001"); // 👉 redirige a ISO27001
         }
       }}
     />
   );
 }
 
+// === Aplicación principal ===
 function App() {
   const [user, setUser] = useState(null);
 
@@ -42,13 +43,13 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* Login */}
+        {/* === LOGIN === */}
         <Route
           path="/"
           element={!user ? <Login onLogin={handleLogin} /> : <Navigate to="/dashboard" />}
         />
 
-        {/* Dashboard */}
+        {/* === DASHBOARD === */}
         <Route
           path="/dashboard"
           element={
@@ -56,14 +57,14 @@ function App() {
           }
         />
 
-        {/* ISO9001 con sidebar */}
+        {/* === ISO 9001 con Sidebar completo === */}
         <Route
           path="/iso9001/*"
           element={
             user ? (
               <Sidebar>
                 <Routes>
-                  <Route index element={<ISO9001Home />} /> {/* Página principal */}
+                  <Route index element={<ISO9001Home />} /> {/* Página principal ISO9001 */}
                   <Route path="analisis" element={<Analisis />} />
                   <Route path="documentacion" element={<Documentacion />} />
                   <Route path="mapa-procesos" element={<MapaProcesos />} />
@@ -80,9 +81,9 @@ function App() {
           }
         />
 
-        {/* ISO27001 sin sidebar */}
+        {/* === ISO 27001 con su propio header y sidebar === */}
         <Route
-          path="/iso27001"
+          path="/iso27001/*"
           element={user ? <ISO27001Home /> : <Navigate to="/" />}
         />
       </Routes>
