@@ -70,6 +70,11 @@ export default function Sidebar({ children, onLogout }) {
                   Usuarios y roles
                 </NavLink>
               </li>
+              <li>
+                <NavLink to="/iso27001/Contexto" className={({ isActive }) => isActive ? "active" : ""}>
+                  Contexto de la organización
+                </NavLink>
+              </li>
             </ul>
           </nav>
         </aside>
