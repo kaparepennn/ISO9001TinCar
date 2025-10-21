@@ -53,7 +53,7 @@ export default function ISO27001Home() {
               index
               element={
                 <div className="iso-home">
-                  <h1>Dashboard ISO 27001</h1>
+                  <h1>Dashboard ISO27001</h1>
                   <p>
                     Bienvenido al Sistema de Gestión de Seguridad de la Información.  
                     Aquí podrás acceder a las diferentes fases de la norma ISO 27001.
