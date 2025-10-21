@@ -2,7 +2,7 @@ import React from 'react'
 import logo from '../assets/logo.png'
 
 export default function ISOPage({ norma, onBack, user }) {
-  const is9001 = norma === 'ISO 9001'
+  const is9001 = norma === 'ISO9001'
   return (
     <div className="page-wrap">
       <header className="topbar">

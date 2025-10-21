@@ -88,13 +88,13 @@ export default function Dashboard({ user, onNavigate, onLogout }) {
           {/* Botones centrados */}
           <div className="dashboard-buttons">
             <button className="btn big" onClick={() => onNavigate("iso9001")}>
-              ISO 9001
+              ISO9001
             </button>
             <button
               className="btn big secondary"
               onClick={() => onNavigate("iso27001")}
             >
-              ISO 27001
+              ISO27001
             </button>
           </div>
 

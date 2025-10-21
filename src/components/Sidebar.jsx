@@ -27,7 +27,7 @@ export default function Sidebar({ children, onLogout }) {
       {/* Layout de 2 columnas: sidebar + contenido */}
       <div className="iso-main">
         <aside className="sidebar">
-          <h2 className="sidebar-title">ISO 9001</h2>
+          <h2 className="sidebar-title">ISO9001</h2>
           <nav>
             <ul>
               <li>
