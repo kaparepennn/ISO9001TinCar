@@ -24,7 +24,7 @@ export default function ISOPage({ norma, onBack, user }) {
         <section className="iso-content">
           {is9001 ? (
             <>
-              <h2>Checklist básico para ISO 9001</h2>
+              <h2>Checklist básico para ISO9001</h2>
               <ol>
                 <li>Definir el alcance del SGC.</li>
                 <li>Identificar procesos y responsables.</li>
@@ -35,7 +35,7 @@ export default function ISOPage({ norma, onBack, user }) {
             </>
           ) : (
             <>
-              <h2>Checklist básico para ISO 27001</h2>
+              <h2>Checklist básico para ISO27001</h2>
               <ol>
                 <li>Definir el alcance del SGSI.</li>
                 <li>Realizar análisis de riesgos.</li>
