@@ -25,31 +25,40 @@ import ISO9001Home from "./pages/ISO9001Home";
 
 // === Páginas ISO 27001 ===
 import ISO27001Home from "./pages/ISO27001Home";
-import ISO27001Checklist from "./pages/ISO27001Checklist"; // 👈 NUEVO checklist agregado
+import ISO27001Checklist from "./pages/ISO27001Checklist";
+
+// === Placeholder temporal ===
+function Organizacionales() {
+  return <div className="content"><h1>Dominio Organizacionales</h1></div>;
+}
+function Personas() {
+  return <div className="content"><h1>Dominio Personas</h1></div>;
+}
+function Fisicos() {
+  return <div className="content"><h1>Dominio Físicos</h1></div>;
+}
+function Tecnologicos() {
+  return <div className="content"><h1>Dominio Tecnológicos</h1></div>;
+}
 
 // === Wrapper del Dashboard principal ===
 function DashboardWrapper({ user, onLogout }) {
   const navigate = useNavigate();
-
   return (
     <Dashboard
       user={user}
       onLogout={onLogout}
       onNavigate={(norma) => {
-        if (norma === "iso9001") {
-          navigate("/iso9001"); // 👉 redirige a ISO 9001
-        } else if (norma === "iso27001") {
-          navigate("/iso27001"); // 👉 redirige a ISO 27001
-        }
+        if (norma === "iso9001") navigate("/iso9001");
+        else if (norma === "iso27001") navigate("/iso27001");
       }}
     />
   );
 }
 
-// === Aplicación principal ===
-function App() {
+// === App principal ===
+export default function App() {
   const [user, setUser] = useState(null);
-
   const handleLogin = (userData) => setUser(userData);
   const handleLogout = () => setUser(null);
 
@@ -59,12 +68,10 @@ function App() {
         {/* === LOGIN === */}
         <Route
           path="/"
-          element={
-            !user ? <Login onLogin={handleLogin} /> : <Navigate to="/dashboard" />
-          }
+          element={!user ? <Login onLogin={handleLogin} /> : <Navigate to="/dashboard" />}
         />
 
-        {/* === DASHBOARD PRINCIPAL === */}
+        {/* === DASHBOARD === */}
         <Route
           path="/dashboard"
           element={
@@ -76,14 +83,14 @@ function App() {
           }
         />
 
-        {/* === ISO 9001 (Sidebar y subrutas) === */}
+        {/* === ISO 9001 === */}
         <Route
           path="/iso9001/*"
           element={
             user ? (
               <Sidebar onLogout={handleLogout}>
                 <Routes>
-                  <Route index element={<ISO9001Home />} /> {/* Página principal ISO9001 */}
+                  <Route index element={<ISO9001Home />} />
                   <Route path="analisis" element={<Analisis />} />
                   <Route path="documentacion" element={<Documentacion />} />
                   <Route path="mapa-procesos" element={<MapaProcesos />} />
@@ -100,18 +107,30 @@ function App() {
           }
         />
 
-        {/* === ISO 27001 (Dashboard + Checklist) === */}
+        {/* === ISO 27001 === */}
         <Route
-          path="/iso27001"
-          element={user ? <ISO27001Home /> : <Navigate to="/" />}
+          path="/iso27001/*"
+          element={
+            user ? (
+              <Sidebar onLogout={handleLogout}>
+                <Routes>
+                  <Route index element={<ISO27001Home />} />
+                  <Route path="checklist" element={<ISO27001Checklist />} />
+                  <Route path="organizacionales" element={<Organizacionales />} />
+                  <Route path="personas" element={<Personas />} />
+                  <Route path="fisicos" element={<Fisicos />} />
+                  <Route path="tecnologicos" element={<Tecnologicos />} />
+                </Routes>
+              </Sidebar>
+            ) : (
+              <Navigate to="/" />
+            )
+          }
         />
-        <Route
-          path="/iso27001/checklist"
-          element={user ? <ISO27001Checklist /> : <Navigate to="/" />}
-        />
+
+        {/* === Redirección por defecto === */}
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>
   );
 }
-
-export default App;

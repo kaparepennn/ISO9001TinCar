@@ -1,14 +1,14 @@
-import React from "react"
-import { NavLink, useNavigate } from "react-router-dom"
-import logo from "../assets/logo.png"
-import "../styles/index.css"
+import React from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import logo from "../assets/logo.png";
+import "../styles/index.css";
 
-export default function Sidebar({ children, onLogout }) {
-  const navigate = useNavigate()
+export default function SidebarISO27001({ children, onLogout }) {
+  const navigate = useNavigate();
 
   return (
     <div className="iso-container">
-      {/* Header fijo arriba */}
+      {/* === Header superior === */}
       <header className="iso-header">
         <div className="brand">
           <img src={logo} alt="TinCar" className="brand-logo" />
@@ -24,50 +24,50 @@ export default function Sidebar({ children, onLogout }) {
         </div>
       </header>
 
-      {/* Layout de 2 columnas: sidebar + contenido */}
+      {/* === Layout principal con sidebar y contenido === */}
       <div className="iso-main">
         <aside className="sidebar">
-          <h2 className="sidebar-title">ISO9001</h2>
+          <h2 className="sidebar-title">ISO27001</h2>
           <nav>
             <ul>
               <li>
-                <NavLink to="/iso9001/analisis" className={({ isActive }) => isActive ? "active" : ""}>
-                  Análisis
+                <NavLink
+                  to="/iso27001/checklist"
+                  className={({ isActive }) => (isActive ? "active" : "")}
+                >
+                  Checklist General
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/iso9001/documentacion" className={({ isActive }) => isActive ? "active" : ""}>
-                  Documentación
+                <NavLink
+                  to="/iso27001/organizacionales"
+                  className={({ isActive }) => (isActive ? "active" : "")}
+                >
+                  Organizacionales
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/iso9001/mapa-procesos" className={({ isActive }) => isActive ? "active" : ""}>
-                  Mapa de procesos
+                <NavLink
+                  to="/iso27001/personas"
+                  className={({ isActive }) => (isActive ? "active" : "")}
+                >
+                  Personas
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/iso9001/capacitacion" className={({ isActive }) => isActive ? "active" : ""}>
-                  Capacitación
+                <NavLink
+                  to="/iso27001/fisicos"
+                  className={({ isActive }) => (isActive ? "active" : "")}
+                >
+                  Físicos
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/iso9001/implementacion" className={({ isActive }) => isActive ? "active" : ""}>
-                  Implementación
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/iso9001/auditoria" className={({ isActive }) => isActive ? "active" : ""}>
-                  Auditoría
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/iso9001/registro-empresas" className={({ isActive }) => isActive ? "active" : ""}>
-                  Registro de empresas
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/iso9001/usuarios-roles" className={({ isActive }) => isActive ? "active" : ""}>
-                  Usuarios y roles
+                <NavLink
+                  to="/iso27001/tecnologicos"
+                  className={({ isActive }) => (isActive ? "active" : "")}
+                >
+                  Tecnológicos
                 </NavLink>
               </li>
             </ul>
@@ -77,5 +77,5 @@ export default function Sidebar({ children, onLogout }) {
         <main className="content">{children}</main>
       </div>
     </div>
-  )
+  );
 }

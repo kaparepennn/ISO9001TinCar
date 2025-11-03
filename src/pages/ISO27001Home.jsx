@@ -1,43 +1,64 @@
-import React from "react"
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recharts"
-
-const data = [
-  { name: "Contexto", value: 20 },
-  { name: "Liderazgo", value: 30 },
-  { name: "Procesos", value: 25 },
-  { name: "Evaluacion", value: 15 },
-  { name: "Mejora", value: 10 },
-]
-
-const COLORS = ["#FFB300", "#E88E2E", "#FFEFCA", "#2C2C2C", "#1A1919"]
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import "../styles/index.css";
 
 export default function ISO27001Home() {
-  return (
-    <div className="iso-dashboard">
-      <h1>Dashboard ISO27001</h1>
-      <p>Visualización general de las etapas de implementación.</p>
+  const navigate = useNavigate();
 
-      <div className="chart-box">
-        <ResponsiveContainer width="100%" height={300}>
-          <PieChart>
-            <Pie
-              data={data}
-              cx="50%"
-              cy="50%"
-              outerRadius={100}
-              fill="#8884d8"
-              dataKey="value"
-              label
+  return (
+    <div className="iso-content">
+      <h1>ISO 27001 — Sistema de Gestión de Seguridad de la Información</h1>
+      <p className="description">
+        En esta sección podrás gestionar la implementación de la norma ISO 27001,
+        incluyendo los checklist, controles y evidencias asociadas a los dominios 
+        Organizacionales, Personas, Físicos y Tecnológicos.
+      </p>
+
+      <div className="iso-dashboard-grid">
+        {/* === Tarjeta de checklist === */}
+        <div className="iso-card">
+          <h3>Checklist General</h3>
+          <p>Evalúa el cumplimiento global de los controles ISO 27001.</p>
+          <button
+            className="btn primary"
+            onClick={() => navigate("/iso27001/checklist")}
+          >
+            Ver checklist
+          </button>
+        </div>
+
+        {/* === Tarjeta de dominios === */}
+        <div className="iso-card">
+          <h3>Dominios</h3>
+          <p>Explora los 4 dominios clave de la norma y sus controles asociados.</p>
+          <div className="btn-group">
+            <button
+              className="btn small"
+              onClick={() => navigate("/iso27001/organizacionales")}
             >
-              {data.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-              ))}
-            </Pie>
-            <Tooltip />
-            <Legend />
-          </PieChart>
-        </ResponsiveContainer>
+              Organizacionales
+            </button>
+            <button
+              className="btn small"
+              onClick={() => navigate("/iso27001/personas")}
+            >
+              Personas
+            </button>
+            <button
+              className="btn small"
+              onClick={() => navigate("/iso27001/fisicos")}
+            >
+              Físicos
+            </button>
+            <button
+              className="btn small"
+              onClick={() => navigate("/iso27001/tecnologicos")}
+            >
+              Tecnológicos
+            </button>
+          </div>
+        </div>
       </div>
     </div>
-  )
+  );
 }

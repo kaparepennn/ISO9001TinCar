@@ -1,157 +1,155 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import logo from "../assets/logo.png";
+import "../styles/index.css";
 
-export default function ISO27001Checklist() {
-  const [selectedDomain, setSelectedDomain] = useState("Organizacional");
+export default function ISO27001Checklist({ onLogout }) {
+  const navigate = useNavigate();
 
-  const controls = {
-    Organizacional: [
-      { code: "A.5.1", description: "Política de seguridad de la información" },
-      { code: "A.5.2", description: "Roles y responsabilidades de seguridad" },
-      { code: "A.5.3", description: "Contacto con autoridades" },
-      { code: "A.5.4", description: "Contacto con grupos de interés" },
-      { code: "A.5.9", description: "Inventario de activos" },
-      { code: "A.5.10", description: "Uso aceptable de activos" },
-      { code: "A.5.11", description: "Seguridad en proyectos" },
-      { code: "A.5.24", description: "Gestión de incidentes" },
-      { code: "A.5.29", description: "Continuidad del negocio" },
-      { code: "A.5.34", description: "Cumplimiento normativo" },
-    ],
-    Personas: [
-      { code: "A.6.1", description: "Evaluación del personal antes del empleo" },
-      { code: "A.6.2", description: "Términos y condiciones de empleo" },
-      { code: "A.6.3", description: "Concienciación y capacitación en seguridad" },
-      { code: "A.6.4", description: "Procedimiento disciplinario" },
-      { code: "A.6.5", description: "Responsabilidades post-empleo" },
-      { code: "A.6.6", description: "Acuerdos de confidencialidad" },
-      { code: "A.6.7", description: "Trabajo remoto" },
-      { code: "A.6.8", description: "Reporte de incidentes por el personal" },
-    ],
-    Físico: [
-      { code: "A.7.1", description: "Perímetro de seguridad física" },
-      { code: "A.7.2", description: "Entrada física a áreas sensibles" },
-      { code: "A.7.3", description: "Seguridad de oficinas e instalaciones" },
-      { code: "A.7.4", description: "Monitoreo de accesos no autorizados" },
-      { code: "A.7.5", description: "Protección contra incendios e inundaciones" },
-      { code: "A.7.6", description: "Trabajo en áreas seguras" },
-      { code: "A.7.7", description: "Limpieza de escritorio/pantalla" },
-      { code: "A.7.8", description: "Protección de equipos físicos" },
-      { code: "A.7.9", description: "Seguridad de activos fuera del sitio" },
-      { code: "A.7.10", description: "Medios de almacenamiento" },
-      { code: "A.7.11", description: "Servicios públicos de soporte" },
-      { code: "A.7.12", description: "Seguridad del cableado" },
-      { code: "A.7.13", description: "Mantenimiento físico del equipo" },
-      { code: "A.7.14", description: "Eliminación o reutilización segura de equipos" },
-    ],
-    Tecnológico: [
-      { code: "A.8.1", description: "Controles criptográficos" },
-      { code: "A.8.2", description: "Gestión de configuración" },
-      { code: "A.8.3", description: "Seguridad en desarrollo" },
-      { code: "A.8.7", description: "Registro y monitoreo" },
-      { code: "A.8.11", description: "Seguridad en redes y sistemas" },
-      { code: "A.8.21", description: "Gestión de vulnerabilidades" },
-      { code: "A.8.26", description: "Control de acceso" },
-      { code: "A.8.31", description: "Protección de datos y filtrado web" },
-    ],
-  };
+  // === Estructura del checklist según ISO 27001 ===
+  const checklistInicial = [
+    {
+      categoria: "Contexto de la organización",
+      controles: [
+        "Identificar las partes interesadas internas y externas.",
+        "Definir el alcance del SGSI (Sistema de Gestión de Seguridad de la Información).",
+        "Analizar los riesgos y oportunidades relacionados con la seguridad de la información.",
+        "Documentar las políticas y objetivos del SGSI."
+      ]
+    },
+    {
+      categoria: "Liderazgo y compromiso",
+      controles: [
+        "La dirección demuestra liderazgo y compromiso con la seguridad de la información.",
+        "Se ha definido una política de seguridad clara y comunicada.",
+        "Los roles y responsabilidades están asignados y documentados."
+      ]
+    },
+    {
+      categoria: "Planificación del SGSI",
+      controles: [
+        "Se ha realizado una evaluación de riesgos de seguridad de la información.",
+        "Se han identificado y documentado los controles necesarios para gestionar los riesgos.",
+        "Se han establecido objetivos de seguridad medibles y coherentes con la política."
+      ]
+    },
+    {
+      categoria: "Soporte y recursos",
+      controles: [
+        "La organización dispone de recursos suficientes para mantener el SGSI.",
+        "El personal ha sido capacitado en materia de seguridad de la información.",
+        "La comunicación interna y externa del SGSI está claramente definida.",
+        "La documentación y control de la información están actualizados."
+      ]
+    },
+    {
+      categoria: "Operación y control",
+      controles: [
+        "Se implementan controles para reducir los riesgos identificados.",
+        "Los incidentes de seguridad son gestionados y documentados.",
+        "Se mantienen evidencias de cumplimiento de los procedimientos operativos.",
+        "Se gestionan los cambios de manera controlada."
+      ]
+    },
+    {
+      categoria: "Evaluación del desempeño",
+      controles: [
+        "Se realizan auditorías internas periódicas del SGSI.",
+        "La dirección revisa los resultados del SGSI y toma decisiones basadas en evidencia.",
+        "Los indicadores de desempeño son medidos y analizados."
+      ]
+    },
+    {
+      categoria: "Mejora continua",
+      controles: [
+        "Se identifican no conformidades y se implementan acciones correctivas.",
+        "Se promueve la mejora continua del SGSI.",
+        "Las lecciones aprendidas de incidentes se documentan y comunican."
+      ]
+    }
+  ];
 
-  const [checklistData, setChecklistData] = useState({});
-
-  const handleChange = (code, field, value) => {
-    setChecklistData((prev) => ({
-      ...prev,
-      [code]: { ...prev[code], [field]: value },
+  // === Estado con persistencia local ===
+  const [checklist, setChecklist] = useState(() => {
+    const saved = localStorage.getItem("iso27001_checklist");
+    return saved ? JSON.parse(saved) : checklistInicial.map(c => ({
+      ...c,
+      controles: c.controles.map(control => ({ texto: control, cumplido: false }))
     }));
+  });
+
+  useEffect(() => {
+    localStorage.setItem("iso27001_checklist", JSON.stringify(checklist));
+  }, [checklist]);
+
+  // === Manejo del cambio de checkbox ===
+  const toggleControl = (catIndex, ctrlIndex) => {
+    const nuevoChecklist = [...checklist];
+    nuevoChecklist[catIndex].controles[ctrlIndex].cumplido = 
+      !nuevoChecklist[catIndex].controles[ctrlIndex].cumplido;
+    setChecklist(nuevoChecklist);
   };
+
+  const progresoTotal = Math.round(
+    (checklist.flatMap(c => c.controles).filter(ctrl => ctrl.cumplido).length /
+      checklist.flatMap(c => c.controles).length) * 100
+  );
 
   return (
-    <div className="page-wrap">
-      <header className="topbar">
+    <div className="iso-container">
+      {/* === Header === */}
+      <header className="iso-header">
         <div className="brand">
-          <span className="brand-title">ISO 27001 - Checklist</span>
+          <img src={logo} alt="TinCar" className="brand-logo" />
+          <span className="brand-title">TinCar</span>
+        </div>
+        <div className="top-actions">
+          <button className="btn secondary" onClick={() => navigate("/iso27001")}>
+            Volver
+          </button>
+          <button className="btn ghost" onClick={onLogout}>
+            Cerrar sesión
+          </button>
         </div>
       </header>
 
+      {/* === Cuerpo principal === */}
       <main className="content">
-        <h1>Checklist ISO 27001 (Anexo A)</h1>
-        <p>Selecciona un dominio para visualizar y registrar los controles correspondientes.</p>
+        <h1>Checklist General — ISO 27001</h1>
+        <p>
+          Este checklist te ayudará a evaluar el nivel de cumplimiento de la organización
+          con los requisitos principales de la norma ISO 27001:2013/2022.
+        </p>
 
-        <div className="filter-bar">
-          <label>Dominio: </label>
-          <select
-            value={selectedDomain}
-            onChange={(e) => setSelectedDomain(e.target.value)}
-            className="select-domain"
-          >
-            {Object.keys(controls).map((domain) => (
-              <option key={domain}>{domain}</option>
-            ))}
-          </select>
+        {/* === Indicador de progreso === */}
+        <div className="progress-bar">
+          <div className="progress-fill" style={{ width: `${progresoTotal}%` }}>
+            {progresoTotal}%
+          </div>
         </div>
 
-        <table className="checklist-table">
-          <thead>
-            <tr>
-              <th>Código</th>
-              <th>Descripción</th>
-              <th>Estado</th>
-              <th>Evidencia</th>
-              <th>Responsable</th>
-              <th>Fecha revisión</th>
-              <th>Observaciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {controls[selectedDomain].map((ctrl) => (
-              <tr key={ctrl.code}>
-                <td>{ctrl.code}</td>
-                <td>{ctrl.description}</td>
-                <td>
-                  <select
-                    value={checklistData[ctrl.code]?.estado || ""}
-                    onChange={(e) => handleChange(ctrl.code, "estado", e.target.value)}
-                  >
-                    <option value="">Seleccione</option>
-                    <option value="Cumple">✅ Cumple</option>
-                    <option value="Parcial">⚠️ Parcial</option>
-                    <option value="No cumple">❌ No cumple</option>
-                    <option value="En proceso">⏳ En proceso</option>
-                  </select>
-                </td>
-                <td>
-                  <input
-                    type="text"
-                    placeholder="Ruta o evidencia"
-                    value={checklistData[ctrl.code]?.evidencia || ""}
-                    onChange={(e) => handleChange(ctrl.code, "evidencia", e.target.value)}
-                  />
-                </td>
-                <td>
-                  <input
-                    type="text"
-                    placeholder="Responsable"
-                    value={checklistData[ctrl.code]?.responsable || ""}
-                    onChange={(e) => handleChange(ctrl.code, "responsable", e.target.value)}
-                  />
-                </td>
-                <td>
-                  <input
-                    type="date"
-                    value={checklistData[ctrl.code]?.fecha || ""}
-                    onChange={(e) => handleChange(ctrl.code, "fecha", e.target.value)}
-                  />
-                </td>
-                <td>
-                  <input
-                    type="text"
-                    placeholder="Observaciones"
-                    value={checklistData[ctrl.code]?.observaciones || ""}
-                    onChange={(e) => handleChange(ctrl.code, "observaciones", e.target.value)}
-                  />
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        {/* === Contenido del checklist === */}
+        <div className="checklist-container">
+          {checklist.map((categoria, catIndex) => (
+            <div key={catIndex} className="checklist-section">
+              <h2>{categoria.categoria}</h2>
+              <ul>
+                {categoria.controles.map((control, ctrlIndex) => (
+                  <li key={ctrlIndex}>
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={control.cumplido}
+                        onChange={() => toggleControl(catIndex, ctrlIndex)}
+                      />
+                      <span>{control.texto}</span>
+                    </label>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
       </main>
     </div>
   );
