@@ -1,8 +1,18 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+  useNavigate,
+} from "react-router-dom";
+
+// === Componentes principales ===
 import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
 import Sidebar from "./components/Sidebar";
+
+// === Páginas ISO 9001 ===
 import Analisis from "./pages/Analisis";
 import Documentacion from "./pages/Documentacion";
 import MapaProcesos from "./pages/MapaProcesos";
@@ -12,7 +22,10 @@ import Auditoria from "./pages/Auditoria";
 import RegistroEmpresas from "./pages/RegistroEmpresas";
 import UsuariosRoles from "./pages/UsuariosRoles";
 import ISO9001Home from "./pages/ISO9001Home";
-import ISO27001Home from "./pages/ISO27001Home"; // 👈 nuevo
+
+// === Páginas ISO 27001 ===
+import ISO27001Home from "./pages/ISO27001Home";
+import ISO27001Checklist from "./pages/ISO27001Checklist"; // 👈 NUEVO checklist agregado
 
 // === Wrapper del Dashboard principal ===
 function DashboardWrapper({ user, onLogout }) {
@@ -24,9 +37,9 @@ function DashboardWrapper({ user, onLogout }) {
       onLogout={onLogout}
       onNavigate={(norma) => {
         if (norma === "iso9001") {
-          navigate("/iso9001"); // 👉 redirige a ISO9001
+          navigate("/iso9001"); // 👉 redirige a ISO 9001
         } else if (norma === "iso27001") {
-          navigate("/iso27001"); // 👉 redirige a ISO27001
+          navigate("/iso27001"); // 👉 redirige a ISO 27001
         }
       }}
     />
@@ -46,23 +59,29 @@ function App() {
         {/* === LOGIN === */}
         <Route
           path="/"
-          element={!user ? <Login onLogin={handleLogin} /> : <Navigate to="/dashboard" />}
-        />
-
-        {/* === DASHBOARD === */}
-        <Route
-          path="/dashboard"
           element={
-            user ? <DashboardWrapper user={user} onLogout={handleLogout} /> : <Navigate to="/" />
+            !user ? <Login onLogin={handleLogin} /> : <Navigate to="/dashboard" />
           }
         />
 
-        {/* === ISO 9001 con Sidebar completo === */}
+        {/* === DASHBOARD PRINCIPAL === */}
+        <Route
+          path="/dashboard"
+          element={
+            user ? (
+              <DashboardWrapper user={user} onLogout={handleLogout} />
+            ) : (
+              <Navigate to="/" />
+            )
+          }
+        />
+
+        {/* === ISO 9001 (Sidebar y subrutas) === */}
         <Route
           path="/iso9001/*"
           element={
             user ? (
-              <Sidebar>
+              <Sidebar onLogout={handleLogout}>
                 <Routes>
                   <Route index element={<ISO9001Home />} /> {/* Página principal ISO9001 */}
                   <Route path="analisis" element={<Analisis />} />
@@ -81,10 +100,14 @@ function App() {
           }
         />
 
-        {/* === ISO 27001 con su propio header y sidebar === */}
+        {/* === ISO 27001 (Dashboard + Checklist) === */}
         <Route
-          path="/iso27001/*"
+          path="/iso27001"
           element={user ? <ISO27001Home /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/iso27001/checklist"
+          element={user ? <ISO27001Checklist /> : <Navigate to="/" />}
         />
       </Routes>
     </Router>
