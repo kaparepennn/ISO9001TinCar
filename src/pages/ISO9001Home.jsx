@@ -11,12 +11,12 @@ const data = [
 
 const COLORS = ["#FFB300", "#E88E2E", "#FFEFCA", "#2C2C2C"];
 
-export default function ISO27001Home() {
+export default function ISO9001Home() {
   const navigate = useNavigate();
 
   return (
     <div className="iso-dashboard">
-      <h1>Dashboard ISO 27001</h1>
+      <h1>Dashboard ISO9001</h1>
       <p>Visualización general de las etapas de implementación.</p>
 
       <div className="chart-box">
@@ -31,12 +31,6 @@ export default function ISO27001Home() {
             <Legend />
           </PieChart>
         </ResponsiveContainer>
-      </div>
-
-      <div className="actions">
-        <button className="btn" onClick={() => navigate("/iso27001/checklist")}>
-          Ir al Checklist ISO 27001
-        </button>
       </div>
     </div>
   );

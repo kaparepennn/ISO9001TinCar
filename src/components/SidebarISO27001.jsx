@@ -29,54 +29,39 @@ export default function Sidebar({ children, onLogout }) {
       <div className="iso-main">
         {/* === Sidebar lateral === */}
         <aside className="sidebar">
-          <h2 className="sidebar-title">ISO9001</h2>
+          <h2 className="sidebar-title">ISO27001</h2>
           <nav>
             <ul>
               <li>
-                <NavLink to="/iso9001" end className={({ isActive }) => (isActive ? "active" : "")}>
+                <NavLink to="/iso27001" end className={({ isActive }) => (isActive ? "active" : "")}>
                   Inicio
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/iso9001/analisis" className={({ isActive }) => (isActive ? "active" : "")}>
-                  Análisis
+                <NavLink to="/iso27001/checklist" className={({ isActive }) => (isActive ? "active" : "")}>
+                  Chaecklist General
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/iso9001/documentacion" className={({ isActive }) => (isActive ? "active" : "")}>
-                  Documentación
+                <NavLink to="/iso27001/organizacionales" className={({ isActive }) => (isActive ? "active" : "")}>
+                  Dominio Organizacionales
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/iso9001/mapa-procesos" className={({ isActive }) => (isActive ? "active" : "")}>
-                  Mapa de procesos
+                <NavLink to="/iso27001/personas" className={({ isActive }) => (isActive ? "active" : "")}>
+                  Dominios Personales
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/iso9001/capacitacion" className={({ isActive }) => (isActive ? "active" : "")}>
-                  Capacitación
+                <NavLink to="/iso27001/fisicos" className={({ isActive }) => (isActive ? "active" : "")}>
+                  Dominios físiscos
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/iso9001/implementacion" className={({ isActive }) => (isActive ? "active" : "")}>
-                  Implementación
+                <NavLink to="/iso27001/tecnologicos" className={({ isActive }) => (isActive ? "active" : "")}>
+                  Dominios tecnológicos
                 </NavLink>
               </li>
-              <li>
-                <NavLink to="/iso9001/auditoria" className={({ isActive }) => (isActive ? "active" : "")}>
-                  Auditoría
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/iso9001/registro-empresas" className={({ isActive }) => (isActive ? "active" : "")}>
-                  Registro de empresas
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/iso9001/usuarios-roles" className={({ isActive }) => (isActive ? "active" : "")}>
-                  Usuarios y roles
-                </NavLink>
-                </li>
             </ul>
           </nav>
         </aside>

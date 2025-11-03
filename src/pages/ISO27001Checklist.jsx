@@ -6,7 +6,7 @@ import "../styles/index.css";
 export default function ISO27001Checklist({ onLogout }) {
   const navigate = useNavigate();
 
-  // === Estructura del checklist según ISO 27001 ===
+  // === Estructura del checklist según ISO27001 ===
   const checklistInicial = [
     {
       categoria: "Contexto de la organización",
@@ -115,10 +115,10 @@ export default function ISO27001Checklist({ onLogout }) {
 
       {/* === Cuerpo principal === */}
       <main className="content">
-        <h1>Checklist General — ISO 27001</h1>
+        <h1>Checklist General — ISO27001</h1>
         <p>
           Este checklist te ayudará a evaluar el nivel de cumplimiento de la organización
-          con los requisitos principales de la norma ISO 27001:2013/2022.
+          con los requisitos principales de la norma ISO27001:2013/2022.
         </p>
 
         {/* === Indicador de progreso === */}

@@ -7,12 +7,12 @@ import {
   useNavigate,
 } from "react-router-dom";
 
-// === Componentes principales ===
+// === Componentes base ===
 import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
 import Sidebar from "./components/Sidebar";
 
-// === Páginas ISO 9001 ===
+// === ISO9001 ===
 import Analisis from "./pages/Analisis";
 import Documentacion from "./pages/Documentacion";
 import MapaProcesos from "./pages/MapaProcesos";
@@ -23,23 +23,13 @@ import RegistroEmpresas from "./pages/RegistroEmpresas";
 import UsuariosRoles from "./pages/UsuariosRoles";
 import ISO9001Home from "./pages/ISO9001Home";
 
-// === Páginas ISO 27001 ===
+// === ISO27001 ===
 import ISO27001Home from "./pages/ISO27001Home";
 import ISO27001Checklist from "./pages/ISO27001Checklist";
-
-// === Placeholder temporal ===
-function Organizacionales() {
-  return <div className="content"><h1>Dominio Organizacionales</h1></div>;
-}
-function Personas() {
-  return <div className="content"><h1>Dominio Personas</h1></div>;
-}
-function Fisicos() {
-  return <div className="content"><h1>Dominio Físicos</h1></div>;
-}
-function Tecnologicos() {
-  return <div className="content"><h1>Dominio Tecnológicos</h1></div>;
-}
+import ISO27001Organizacionales from "./pages/ISO27001Organizacionales";
+import ISO27001Personas from "./pages/ISO27001Personas";
+import ISO27001Fisicos from "./pages/ISO27001Fisicos";
+import ISO27001Tecnologicos from "./pages/ISO27001Tecnologicos";
 
 // === Wrapper del Dashboard principal ===
 function DashboardWrapper({ user, onLogout }) {
@@ -75,11 +65,7 @@ export default function App() {
         <Route
           path="/dashboard"
           element={
-            user ? (
-              <DashboardWrapper user={user} onLogout={handleLogout} />
-            ) : (
-              <Navigate to="/" />
-            )
+            user ? <DashboardWrapper user={user} onLogout={handleLogout} /> : <Navigate to="/" />
           }
         />
 
@@ -112,23 +98,21 @@ export default function App() {
           path="/iso27001/*"
           element={
             user ? (
-              <Sidebar onLogout={handleLogout}>
-                <Routes>
-                  <Route index element={<ISO27001Home />} />
-                  <Route path="checklist" element={<ISO27001Checklist />} />
-                  <Route path="organizacionales" element={<Organizacionales />} />
-                  <Route path="personas" element={<Personas />} />
-                  <Route path="fisicos" element={<Fisicos />} />
-                  <Route path="tecnologicos" element={<Tecnologicos />} />
-                </Routes>
-              </Sidebar>
+              <Routes>
+                <Route index element={<ISO27001Home />} />
+                <Route path="checklist" element={<ISO27001Checklist />} />
+                <Route path="organizacionales" element={<ISO27001Organizacionales />} />
+                <Route path="personas" element={<ISO27001Personas/>} />
+                <Route path="fisicos" element={<ISO27001Fisicos />} />
+                <Route path="tecnologicos" element={<ISO27001Tecnologicos />} />
+              </Routes>
             ) : (
               <Navigate to="/" />
             )
           }
         />
 
-        {/* === Redirección por defecto === */}
+        {/* === Catch-all === */}
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>

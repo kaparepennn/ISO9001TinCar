@@ -6,57 +6,34 @@ import "../styles/index.css";
 export default function ISO27001Organizacionales({ onLogout }) {
   const navigate = useNavigate();
 
-  // === Estructura inicial del checklist ===
-  const checklistInicial = [
-    {
-      codigo: "A.5.1",
-      control: "Política de seguridad",
-      descripcion: "Definir, aprobar y comunicar políticas de seguridad de la información alineadas con los objetivos de la organización.",
-    },
-    {
-      codigo: "A.5.2",
-      control: "Roles y responsabilidades",
-      descripcion: "Asignar responsabilidades claras en materia de seguridad de la información a todos los niveles organizativos.",
-    },
-    {
-      codigo: "A.5.3 - A.5.4",
-      control: "Contacto con autoridades y grupos de interés",
-      descripcion: "Establecer y mantener contactos con las autoridades relevantes y grupos de interés para la gestión de incidentes y cumplimiento legal.",
-    },
-    {
-      codigo: "A.5.9 - A.5.10",
-      control: "Inventario y uso aceptable de activos",
-      descripcion: "Mantener un inventario actualizado de los activos de información y definir reglas claras de uso aceptable.",
-    },
-    {
-      codigo: "A.5.11",
-      control: "Seguridad en proyectos",
-      descripcion: "Incorporar requisitos de seguridad de la información en la gestión de proyectos desde sus fases iniciales.",
-    },
-    {
-      codigo: "A.5.24",
-      control: "Gestión de incidentes de seguridad",
-      descripcion: "Definir procesos para reportar, registrar y resolver incidentes de seguridad de la información.",
-    },
-    {
-      codigo: "A.5.29 - A.5.33",
-      control: "Continuidad del negocio",
-      descripcion: "Desarrollar, implementar y probar planes de continuidad del negocio relacionados con la seguridad de la información.",
-    },
-    {
-      codigo: "A.5.34 - A.5.37",
-      control: "Cumplimiento normativo",
-      descripcion: "Asegurar el cumplimiento de requisitos legales, reglamentarios y contractuales relacionados con la seguridad de la información.",
-    },
+  // === Estructura inicial ===
+  const controlesIniciales = [
+    { codigo: "A.5.1", descripcion: "Política de seguridad de la información." },
+    { codigo: "A.5.2", descripcion: "Roles y responsabilidades de seguridad." },
+    { codigo: "A.5.3", descripcion: "Contacto con autoridades." },
+    { codigo: "A.5.4", descripcion: "Contacto con grupos de interés especial." },
+    { codigo: "A.5.9", descripcion: "Inventario de activos." },
+    { codigo: "A.5.10", descripcion: "Uso aceptable de activos." },
+    { codigo: "A.5.11", descripcion: "Seguridad en proyectos." },
+    { codigo: "A.5.24", descripcion: "Gestión de incidentes de seguridad." },
+    { codigo: "A.5.29", descripcion: "Continuidad del negocio." },
+    { codigo: "A.5.30", descripcion: "Estrategia de continuidad y recuperación." },
+    { codigo: "A.5.31", descripcion: "Procedimientos de continuidad." },
+    { codigo: "A.5.32", descripcion: "Restauración de servicios." },
+    { codigo: "A.5.33", descripcion: "Pruebas de continuidad del negocio." },
+    { codigo: "A.5.34", descripcion: "Cumplimiento con requisitos legales." },
+    { codigo: "A.5.35", descripcion: "Protección de la propiedad intelectual." },
+    { codigo: "A.5.36", descripcion: "Privacidad y protección de datos personales." },
+    { codigo: "A.5.37", descripcion: "Revisión del cumplimiento." },
   ];
 
-  // === Estado persistente en localStorage ===
+  // === Estado local con persistencia ===
   const [controles, setControles] = useState(() => {
     const saved = localStorage.getItem("iso27001_organizacionales");
     return saved
       ? JSON.parse(saved)
-      : checklistInicial.map((item) => ({
-          ...item,
+      : controlesIniciales.map((ctrl) => ({
+          ...ctrl,
           estado: "",
           evidencia: "",
           responsable: "",
@@ -69,25 +46,30 @@ export default function ISO27001Organizacionales({ onLogout }) {
     localStorage.setItem("iso27001_organizacionales", JSON.stringify(controles));
   }, [controles]);
 
-  // === Manejo de cambios en el checklist ===
-  const handleChange = (index, field, value) => {
+  // === Manejadores ===
+  const actualizarCampo = (index, campo, valor) => {
     const nuevos = [...controles];
-    nuevos[index][field] = value;
+    nuevos[index][campo] = valor;
     setControles(nuevos);
   };
 
-  const progreso = Math.round(
-    (controles.filter((c) => c.estado === "Cumple").length / controles.length) * 100
-  );
+  const progreso =
+    Math.round(
+      (controles.filter((c) => c.estado === "Cumple").length /
+        controles.length) *
+        100
+    ) || 0;
 
+  // === Render ===
   return (
     <div className="iso-container">
-      {/* === Header superior === */}
+      {/* === Barra superior === */}
       <header className="iso-header">
         <div className="brand">
           <img src={logo} alt="TinCar" className="brand-logo" />
           <span className="brand-title">TinCar</span>
         </div>
+
         <div className="top-actions">
           <button className="btn secondary" onClick={() => navigate("/iso27001")}>
             Volver
@@ -98,32 +80,31 @@ export default function ISO27001Organizacionales({ onLogout }) {
         </div>
       </header>
 
-      {/* === Contenido principal === */}
+      {/* === Cuerpo principal === */}
       <main className="content">
         <h1>Dominio Organizacionales — ISO 27001</h1>
-        <p>
-          Este módulo abarca los 37 controles del dominio organizacional (A.5.1 – A.5.37), 
-          incluyendo políticas, roles, responsabilidades, gestión de incidentes, continuidad 
-          del negocio y cumplimiento normativo.
+        <p className="description">
+          Este módulo cubre los controles organizacionales (A.5.1 – A.5.37),
+          incluyendo políticas, roles, responsabilidades, continuidad del negocio
+          y cumplimiento normativo.
         </p>
 
         {/* === Barra de progreso === */}
         <div className="progress-bar">
           <div
             className="progress-fill"
-            style={{ width: `${progreso}%` }}
+            style={{ width: `${progreso}%`, backgroundColor: "#0056b3" }}
           >
             {progreso}%
           </div>
         </div>
 
         {/* === Tabla de checklist === */}
-        <div className="checklist-table">
-          <table>
+        <div className="table-wrapper">
+          <table className="checklist-table">
             <thead>
               <tr>
                 <th>Código</th>
-                <th>Control</th>
                 <th>Descripción</th>
                 <th>Estado</th>
                 <th>Evidencia</th>
@@ -133,31 +114,30 @@ export default function ISO27001Organizacionales({ onLogout }) {
               </tr>
             </thead>
             <tbody>
-              {controles.map((ctrl, index) => (
+              {controles.map((control, index) => (
                 <tr key={index}>
-                  <td>{ctrl.codigo}</td>
-                  <td>{ctrl.control}</td>
-                  <td>{ctrl.descripcion}</td>
+                  <td className="codigo">{control.codigo}</td>
+                  <td>{control.descripcion}</td>
                   <td>
                     <select
-                      value={ctrl.estado}
-                      onChange={(e) =>
-                        handleChange(index, "estado", e.target.value)
-                      }
+                      value={control.estado}
+                      onChange={(e) => actualizarCampo(index, "estado", e.target.value)}
+                      className="select-estado"
                     >
                       <option value="">Seleccionar</option>
-                      <option value="Cumple">Cumple</option>
-                      <option value="Parcial">Parcial</option>
-                      <option value="No cumple">No cumple</option>
+                      <option value="Cumple">✅ Cumple</option>
+                      <option value="Parcial">⚠️ Parcial</option>
+                      <option value="No cumple">❌ No cumple</option>
+                      <option value="En proceso">⏳ En proceso</option>
                     </select>
                   </td>
                   <td>
                     <input
                       type="text"
-                      placeholder="Link o ruta..."
-                      value={ctrl.evidencia}
+                      placeholder="Enlace o referencia"
+                      value={control.evidencia}
                       onChange={(e) =>
-                        handleChange(index, "evidencia", e.target.value)
+                        actualizarCampo(index, "evidencia", e.target.value)
                       }
                     />
                   </td>
@@ -165,28 +145,26 @@ export default function ISO27001Organizacionales({ onLogout }) {
                     <input
                       type="text"
                       placeholder="Nombre responsable"
-                      value={ctrl.responsable}
+                      value={control.responsable}
                       onChange={(e) =>
-                        handleChange(index, "responsable", e.target.value)
+                        actualizarCampo(index, "responsable", e.target.value)
                       }
                     />
                   </td>
                   <td>
                     <input
                       type="date"
-                      value={ctrl.fecha}
-                      onChange={(e) =>
-                        handleChange(index, "fecha", e.target.value)
-                      }
+                      value={control.fecha}
+                      onChange={(e) => actualizarCampo(index, "fecha", e.target.value)}
                     />
                   </td>
                   <td>
                     <input
                       type="text"
-                      placeholder="Observaciones..."
-                      value={ctrl.observaciones}
+                      placeholder="Comentarios u observaciones"
+                      value={control.observaciones}
                       onChange={(e) =>
-                        handleChange(index, "observaciones", e.target.value)
+                        actualizarCampo(index, "observaciones", e.target.value)
                       }
                     />
                   </td>

@@ -1476,3 +1476,203 @@ body{
   align-items: center;
   justify-content: center;
 }
+
+/* === Tabla ISO 27001 mejor legible === */
+.table-wrapper {
+  margin-top: 20px;
+  overflow-x: auto;
+  background-color: #1b1f27;
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.checklist-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: #f5f5f5;
+}
+
+.checklist-table th {
+  background-color: #0056b3;
+  color: #fff;
+  padding: 10px;
+  text-align: left;
+  font-weight: 600;
+}
+
+.checklist-table td {
+  background-color: #2a2e38;
+  color: #eaeaea;
+  padding: 8px;
+  border-bottom: 1px solid #3a3f4b;
+}
+
+.checklist-table tr:hover td {
+  background-color: #353b47;
+}
+
+.select-estado {
+  padding: 6px;
+  border-radius: 4px;
+  border: 1px solid #555;
+  background-color: #222;
+  color: #fff;
+}
+
+input[type="text"], input[type="date"] {
+  background-color: #222;
+  color: #fff;
+  border: 1px solid #555;
+  border-radius: 4px;
+  padding: 5px;
+  width: 100%;
+}
+
+.progress-bar {
+  margin-top: 15px;
+  background-color: #333;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 22px;
+  text-align: center;
+  color: #fff;
+  font-weight: bold;
+  line-height: 22px;
+}
+
+/* === Layout general ISO 27001 oscuro === */
+.iso-container {
+  background-color: #1b1f27;
+  color: #f5f5f5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.iso-main {
+  display: flex;
+  flex: 1;
+}
+
+.sidebar {
+  background-color: #0d1117;
+  padding: 20px;
+  width: 240px;
+  min-height: calc(100vh - 70px);
+}
+
+.sidebar-title {
+  color: #ffb300;
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar li {
+  margin: 10px 0;
+}
+
+.sidebar a {
+  color: #d1d5db;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.sidebar a.active {
+  color: #ffb300;
+  font-weight: 600;
+}
+
+.content {
+  flex: 1;
+  padding: 30px;
+  background-color: #1b1f27;
+}
+
+/* === Cabecera superior === */
+.iso-header {
+  background-color: #0d1117;
+  color: white;
+  padding: 15px 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.brand-logo {
+  height: 36px;
+  margin-right: 10px;
+}
+
+.brand-title {
+  font-weight: bold;
+  color: #ffb300;
+}
+
+/* === Tabla de controles === */
+.table-wrapper {
+  margin-top: 20px;
+  overflow-x: auto;
+  background-color: #1f242d;
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.checklist-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: #f5f5f5;
+}
+
+.checklist-table th {
+  background-color: #004080;
+  color: #fff;
+  padding: 10px;
+  text-align: left;
+  font-weight: 600;
+}
+
+.checklist-table td {
+  background-color: #2a2e38;
+  color: #f1f1f1;
+  padding: 8px;
+  border-bottom: 1px solid #3a3f4b;
+}
+
+.checklist-table tr:hover td {
+  background-color: #353b47;
+}
+
+input[type="text"], input[type="date"], select {
+  background-color: #2a2e38;
+  color: #fff;
+  border: 1px solid #555;
+  border-radius: 4px;
+  padding: 6px;
+  width: 100%;
+}
+
+.progress-bar {
+  margin-top: 15px;
+  background-color: #333;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 22px;
+  text-align: center;
+  color: #fff;
+  font-weight: bold;
+  line-height: 22px;
+  background-color: #0056b3;
+}
