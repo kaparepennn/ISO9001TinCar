@@ -1,20 +1,19 @@
-import React from "react";
-import { NavLink, useNavigate } from "react-router-dom";
-import logo from "../assets/logo.png";
-import "../styles/index.css";
+import React from "react"
+import { NavLink, useNavigate } from "react-router-dom"
+import logo from "../assets/logo.png"
+import "../styles/index.css"
 
 export default function Sidebar({ children, onLogout }) {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   return (
     <div className="iso-container">
-      {/* === Barra superior === */}
+      {/* Header fijo arriba */}
       <header className="iso-header">
         <div className="brand">
           <img src={logo} alt="TinCar" className="brand-logo" />
           <span className="brand-title">TinCar</span>
         </div>
-
         <div className="top-actions">
           <button className="btn secondary" onClick={() => navigate("/dashboard")}>
             Volver
@@ -25,65 +24,58 @@ export default function Sidebar({ children, onLogout }) {
         </div>
       </header>
 
-      {/* === Layout general === */}
+      {/* Layout de 2 columnas: sidebar + contenido */}
       <div className="iso-main">
-        {/* === Sidebar lateral === */}
         <aside className="sidebar">
           <h2 className="sidebar-title">ISO9001</h2>
           <nav>
             <ul>
               <li>
-                <NavLink to="/iso9001" end className={({ isActive }) => (isActive ? "active" : "")}>
-                  Inicio
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/iso9001/analisis" className={({ isActive }) => (isActive ? "active" : "")}>
+                <NavLink to="/iso9001/analisis" className={({ isActive }) => isActive ? "active" : ""}>
                   Análisis
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/iso9001/documentacion" className={({ isActive }) => (isActive ? "active" : "")}>
+                <NavLink to="/iso9001/documentacion" className={({ isActive }) => isActive ? "active" : ""}>
                   Documentación
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/iso9001/mapa-procesos" className={({ isActive }) => (isActive ? "active" : "")}>
+                <NavLink to="/iso9001/mapa-procesos" className={({ isActive }) => isActive ? "active" : ""}>
                   Mapa de procesos
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/iso9001/capacitacion" className={({ isActive }) => (isActive ? "active" : "")}>
+                <NavLink to="/iso9001/capacitacion" className={({ isActive }) => isActive ? "active" : ""}>
                   Capacitación
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/iso9001/implementacion" className={({ isActive }) => (isActive ? "active" : "")}>
+                <NavLink to="/iso9001/implementacion" className={({ isActive }) => isActive ? "active" : ""}>
                   Implementación
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/iso9001/auditoria" className={({ isActive }) => (isActive ? "active" : "")}>
+                <NavLink to="/iso9001/auditoria" className={({ isActive }) => isActive ? "active" : ""}>
                   Auditoría
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/iso9001/registro-empresas" className={({ isActive }) => (isActive ? "active" : "")}>
+                <NavLink to="/iso9001/registro-empresas" className={({ isActive }) => isActive ? "active" : ""}>
                   Registro de empresas
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/iso9001/usuarios-roles" className={({ isActive }) => (isActive ? "active" : "")}>
+                <NavLink to="/iso9001/usuarios-roles" className={({ isActive }) => isActive ? "active" : ""}>
                   Usuarios y roles
                 </NavLink>
-                </li>
+              </li>
             </ul>
           </nav>
         </aside>
 
-        {/* === Contenido dinámico === */}
         <main className="content">{children}</main>
       </div>
     </div>
-  );
+  )
 }

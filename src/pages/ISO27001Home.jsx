@@ -1,107 +1,142 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import logo from "../assets/logo.png";
+import React, { useEffect, useState } from "react";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  Tooltip,
+  Legend,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+} from "recharts";
 import "../styles/index.css";
 
-export default function ISO27001Home({ onLogout }) {
-  const navigate = useNavigate();
+const COLORS = ["#FFB300", "#E88E2E", "#FFEFCA", "#C0392B"];
+
+export default function ISO27001Home() {
+  const [dataPie, setDataPie] = useState([]);
+  const [dataBar, setDataBar] = useState([]);
+  const [resumen, setResumen] = useState({});
+
+  useEffect(() => {
+    const controles =
+      JSON.parse(localStorage.getItem("iso27001_checklist_organizacional")) || [];
+    const total = controles.length || 1;
+    const estados = {
+      cumple: controles.filter((c) => c.estado === "Cumple").length,
+      parcial: controles.filter((c) => c.estado === "Parcial").length,
+      noCumple: controles.filter((c) => c.estado === "No cumple").length,
+      proceso: controles.filter((c) => c.estado === "En proceso").length,
+    };
+
+    setResumen({
+      total,
+      ...estados,
+      porcentaje: ((estados.cumple / total) * 100).toFixed(1),
+    });
+
+    setDataPie([
+      { name: "Cumple", value: estados.cumple },
+      { name: "Parcial", value: estados.parcial },
+      { name: "No cumple", value: estados.noCumple },
+      { name: "En proceso", value: estados.proceso },
+    ]);
+
+    setDataBar([
+      { estado: "Cumple", cantidad: estados.cumple },
+      { estado: "Parcial", cantidad: estados.parcial },
+      { estado: "No cumple", cantidad: estados.noCumple },
+      { estado: "En proceso", cantidad: estados.proceso },
+    ]);
+  }, []);
 
   return (
-    <div className="iso-container">
-      {/* === Barra superior === */}
-      <header className="iso-header">
-        <div className="brand">
-          <img src={logo} alt="TinCar" className="brand-logo" />
-          <span className="brand-title">TinCar</span>
+    <div className="iso-dashboard">
+      <h1>Dashboard ISO 27001</h1>
+      <p>
+        Tablero general con el estado actual de cumplimiento basado en los
+        controles registrados en el checklist.
+      </p>
+
+      {/* === Indicador de progreso general === */}
+      <div className="dashboard-progress">
+        <h3>Cumplimiento general: {resumen.porcentaje || 0}%</h3>
+        <progress
+          value={resumen.porcentaje || 0}
+          max="100"
+          className="progress-bar"
+        ></progress>
+      </div>
+
+      {/* === Contenedores de gráficos alineados === */}
+      <div className="charts-row">
+        {/* === Gráfico de torta === */}
+        <div className="chart-box">
+          <h3>Distribución porcentual</h3>
+          <ResponsiveContainer width="100%" height={300}>
+            <PieChart>
+              <Pie
+                data={dataPie}
+                cx="50%"
+                cy="50%"
+                outerRadius={100}
+                dataKey="value"
+                label
+              >
+                {dataPie.map((entry, index) => (
+                  <Cell
+                    key={index}
+                    fill={COLORS[index % COLORS.length]}
+                    stroke="#1A1919"
+                  />
+                ))}
+              </Pie>
+              <Tooltip />
+              <Legend />
+            </PieChart>
+          </ResponsiveContainer>
         </div>
 
-        <div className="top-actions">
-          <button className="btn secondary" onClick={() => navigate("/dashboard")}>
-            Volver
-          </button>
-          <button className="btn ghost" onClick={onLogout}>
-            Cerrar sesión
-          </button>
+        {/* === Gráfico de barras === */}
+        <div className="chart-box">
+          <h3>Controles por estado</h3>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={dataBar}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#555" />
+              <XAxis dataKey="estado" stroke="#FFB300" />
+              <YAxis stroke="#FFB300" />
+              <Tooltip />
+              <Bar dataKey="cantidad" fill="#E88E2E" barSize={50} />
+            </BarChart>
+          </ResponsiveContainer>
         </div>
-      </header>
+      </div>
 
-      {/* === Layout general con sidebar === */}
-      <div className="iso-main">
-        <aside className="sidebar">
-          <h2 className="sidebar-title">ISO27001</h2>
-          <nav>
-            <ul>
-              <li>
-                <button className="nav-btn" onClick={() => navigate("/iso27001/checklist")}>
-                  Checklist General
-                </button>
-              </li>
-              <li>
-                <button className="nav-btn" onClick={() => navigate("/iso27001/organizacionales")}>
-                  Organizacionales
-                </button>
-              </li>
-              <li>
-                <button className="nav-btn" onClick={() => navigate("/iso27001/personas")}>
-                  Personas
-                </button>
-              </li>
-              <li>
-                <button className="nav-btn" onClick={() => navigate("/iso27001/fisicos")}>
-                  Físicos
-                </button>
-              </li>
-              <li>
-                <button className="nav-btn" onClick={() => navigate("/iso27001/tecnologicos")}>
-                  Tecnológicos
-                </button>
-              </li>
-            </ul>
-          </nav>
-        </aside>
-
-        {/* === Contenido principal === */}
-        <main className="content">
-          <div className="iso-content">
-            <h1>ISO 27001 — Sistema de Gestión de Seguridad de la Información</h1>
-            <p className="description">
-              Gestiona la implementación y seguimiento de la norma ISO 27001 mediante checklists, 
-              controles y evidencias de los dominios Organizacionales, Personas, Físicos y Tecnológicos.
-            </p>
-
-            <div className="iso-dashboard-grid">
-              <div className="iso-card">
-                <h3>Checklist General</h3>
-                <p>Evalúa el cumplimiento global de la norma ISO 27001.</p>
-                <button
-                  className="btn primary"
-                  onClick={() => navigate("/iso27001/checklist")}
-                >
-                  Ver checklist
-                </button>
-              </div>
-
-              <div className="iso-card">
-                <h3>Dominios</h3>
-                <p>Explora los 4 dominios clave y sus controles asociados.</p>
-                <div className="btn-group">
-                  <button className="btn small" onClick={() => navigate("/iso27001/organizacionales")}>
-                    Organizacionales
-                  </button>
-                  <button className="btn small" onClick={() => navigate("/iso27001/personas")}>
-                    Personas
-                  </button>
-                  <button className="btn small" onClick={() => navigate("/iso27001/fisicos")}>
-                    Físicos
-                  </button>
-                  <button className="btn small" onClick={() => navigate("/iso27001/tecnologicos")}>
-                    Tecnológicos
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </main>
+      {/* === Resumen numérico general === */}
+      <div className="resumen-dashboard">
+        <div className="card">
+          <h4>Total de controles</h4>
+          <p>{resumen.total || 0}</p>
+        </div>
+        <div className="card">
+          <h4>Cumple</h4>
+          <p>{resumen.cumple || 0}</p>
+        </div>
+        <div className="card">
+          <h4>Parcial</h4>
+          <p>{resumen.parcial || 0}</p>
+        </div>
+        <div className="card">
+          <h4>No cumple</h4>
+          <p>{resumen.noCumple || 0}</p>
+        </div>
+        <div className="card">
+          <h4>En proceso</h4>
+          <p>{resumen.proceso || 0}</p>
+        </div>
       </div>
     </div>
   );

@@ -1,18 +1,12 @@
 import React, { useState } from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-  useNavigate,
-} from "react-router-dom";
-
-// === Componentes base ===
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
 import Sidebar from "./components/Sidebar";
-
-// === ISO9001 ===
+import ISO27001Sidebar from "./components/ISO27001Sidebar";
+import ISO9001Home from "./pages/ISO9001Home";
+import ISO27001Home from "./pages/ISO27001Home";
+import ISO27001Checklist from "./pages/ISO27001Checklist";
 import Analisis from "./pages/Analisis";
 import Documentacion from "./pages/Documentacion";
 import MapaProcesos from "./pages/MapaProcesos";
@@ -21,19 +15,11 @@ import Implementacion from "./pages/Implementacion";
 import Auditoria from "./pages/Auditoria";
 import RegistroEmpresas from "./pages/RegistroEmpresas";
 import UsuariosRoles from "./pages/UsuariosRoles";
-import ISO9001Home from "./pages/ISO9001Home";
 
-// === ISO27001 ===
-import ISO27001Home from "./pages/ISO27001Home";
-import ISO27001Checklist from "./pages/ISO27001Checklist";
-import ISO27001Organizacionales from "./pages/ISO27001Organizacionales";
-import ISO27001Personas from "./pages/ISO27001Personas";
-import ISO27001Fisicos from "./pages/ISO27001Fisicos";
-import ISO27001Tecnologicos from "./pages/ISO27001Tecnologicos";
-
-// === Wrapper del Dashboard principal ===
+// Wrapper del Dashboard principal
 function DashboardWrapper({ user, onLogout }) {
   const navigate = useNavigate();
+
   return (
     <Dashboard
       user={user}
@@ -46,35 +32,24 @@ function DashboardWrapper({ user, onLogout }) {
   );
 }
 
-// === App principal ===
-export default function App() {
+function App() {
   const [user, setUser] = useState(null);
+
   const handleLogin = (userData) => setUser(userData);
   const handleLogout = () => setUser(null);
 
   return (
     <Router>
       <Routes>
-        {/* === LOGIN === */}
-        <Route
-          path="/"
-          element={!user ? <Login onLogin={handleLogin} /> : <Navigate to="/dashboard" />}
-        />
+        <Route path="/" element={!user ? <Login onLogin={handleLogin} /> : <Navigate to="/dashboard" />} />
+        <Route path="/dashboard" element={user ? <DashboardWrapper user={user} onLogout={handleLogout} /> : <Navigate to="/" />} />
 
-        {/* === DASHBOARD === */}
-        <Route
-          path="/dashboard"
-          element={
-            user ? <DashboardWrapper user={user} onLogout={handleLogout} /> : <Navigate to="/" />
-          }
-        />
-
-        {/* === ISO 9001 === */}
+        {/* ISO9001 con sidebar */}
         <Route
           path="/iso9001/*"
           element={
             user ? (
-              <Sidebar onLogout={handleLogout}>
+              <Sidebar>
                 <Routes>
                   <Route index element={<ISO9001Home />} />
                   <Route path="analisis" element={<Analisis />} />
@@ -93,28 +68,25 @@ export default function App() {
           }
         />
 
-        {/* === ISO 27001 === */}
+        {/* ISO27001 con sidebar y dashboard */}
         <Route
           path="/iso27001/*"
           element={
             user ? (
-              <Routes>
-                <Route index element={<ISO27001Home />} />
-                <Route path="checklist" element={<ISO27001Checklist />} />
-                <Route path="organizacionales" element={<ISO27001Organizacionales />} />
-                <Route path="personas" element={<ISO27001Personas/>} />
-                <Route path="fisicos" element={<ISO27001Fisicos />} />
-                <Route path="tecnologicos" element={<ISO27001Tecnologicos />} />
-              </Routes>
+              <ISO27001Sidebar onLogout={handleLogout}>
+                <Routes>
+                  <Route index element={<ISO27001Home />} />
+                  <Route path="checklist" element={<ISO27001Checklist />} />
+                </Routes>
+              </ISO27001Sidebar>
             ) : (
               <Navigate to="/" />
             )
           }
         />
-
-        {/* === Catch-all === */}
-        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>
   );
 }
+
+export default App;

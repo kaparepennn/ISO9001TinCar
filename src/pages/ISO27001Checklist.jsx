@@ -1,156 +1,126 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import logo from "../assets/logo.png";
 import "../styles/index.css";
 
-export default function ISO27001Checklist({ onLogout }) {
-  const navigate = useNavigate();
+const controlesIniciales = [
+  { codigo: "A.5.1", descripcion: "Política de seguridad de la información", estado: "", evidencia: "", responsable: "", fecha: "", observaciones: "" },
+  { codigo: "A.5.2", descripcion: "Roles y responsabilidades de seguridad", estado: "", evidencia: "", responsable: "", fecha: "", observaciones: "" },
+  { codigo: "A.5.3", descripcion: "Contacto con autoridades", estado: "", evidencia: "", responsable: "", fecha: "", observaciones: "" },
+  { codigo: "A.5.4", descripcion: "Contacto con grupos de interés", estado: "", evidencia: "", responsable: "", fecha: "", observaciones: "" },
+  { codigo: "A.5.9", descripcion: "Inventario de activos", estado: "", evidencia: "", responsable: "", fecha: "", observaciones: "" },
+  { codigo: "A.5.10", descripcion: "Uso aceptable de activos", estado: "", evidencia: "", responsable: "", fecha: "", observaciones: "" },
+  { codigo: "A.5.11", descripcion: "Seguridad en proyectos", estado: "", evidencia: "", responsable: "", fecha: "", observaciones: "" },
+  { codigo: "A.5.24", descripcion: "Gestión de incidentes de seguridad", estado: "", evidencia: "", responsable: "", fecha: "", observaciones: "" },
+  { codigo: "A.5.29", descripcion: "Planificación de continuidad del negocio", estado: "", evidencia: "", responsable: "", fecha: "", observaciones: "" },
+  { codigo: "A.5.30", descripcion: "Implementación de la continuidad del negocio", estado: "", evidencia: "", responsable: "", fecha: "", observaciones: "" },
+  { codigo: "A.5.31", descripcion: "Verificación y pruebas de continuidad", estado: "", evidencia: "", responsable: "", fecha: "", observaciones: "" },
+  { codigo: "A.5.32", descripcion: "Evaluación post-incidente", estado: "", evidencia: "", responsable: "", fecha: "", observaciones: "" },
+  { codigo: "A.5.33", descripcion: "Revisión y mejora del plan de continuidad", estado: "", evidencia: "", responsable: "", fecha: "", observaciones: "" },
+  { codigo: "A.5.34", descripcion: "Cumplimiento con requisitos legales y contractuales", estado: "", evidencia: "", responsable: "", fecha: "", observaciones: "" },
+  { codigo: "A.5.35", descripcion: "Propiedad intelectual", estado: "", evidencia: "", responsable: "", fecha: "", observaciones: "" },
+  { codigo: "A.5.36", descripcion: "Protección de registros", estado: "", evidencia: "", responsable: "", fecha: "", observaciones: "" },
+  { codigo: "A.5.37", descripcion: "Privacidad y protección de datos personales", estado: "", evidencia: "", responsable: "", fecha: "", observaciones: "" },
+];
 
-  // === Estructura del checklist según ISO27001 ===
-  const checklistInicial = [
-    {
-      categoria: "Contexto de la organización",
-      controles: [
-        "Identificar las partes interesadas internas y externas.",
-        "Definir el alcance del SGSI (Sistema de Gestión de Seguridad de la Información).",
-        "Analizar los riesgos y oportunidades relacionados con la seguridad de la información.",
-        "Documentar las políticas y objetivos del SGSI."
-      ]
-    },
-    {
-      categoria: "Liderazgo y compromiso",
-      controles: [
-        "La dirección demuestra liderazgo y compromiso con la seguridad de la información.",
-        "Se ha definido una política de seguridad clara y comunicada.",
-        "Los roles y responsabilidades están asignados y documentados."
-      ]
-    },
-    {
-      categoria: "Planificación del SGSI",
-      controles: [
-        "Se ha realizado una evaluación de riesgos de seguridad de la información.",
-        "Se han identificado y documentado los controles necesarios para gestionar los riesgos.",
-        "Se han establecido objetivos de seguridad medibles y coherentes con la política."
-      ]
-    },
-    {
-      categoria: "Soporte y recursos",
-      controles: [
-        "La organización dispone de recursos suficientes para mantener el SGSI.",
-        "El personal ha sido capacitado en materia de seguridad de la información.",
-        "La comunicación interna y externa del SGSI está claramente definida.",
-        "La documentación y control de la información están actualizados."
-      ]
-    },
-    {
-      categoria: "Operación y control",
-      controles: [
-        "Se implementan controles para reducir los riesgos identificados.",
-        "Los incidentes de seguridad son gestionados y documentados.",
-        "Se mantienen evidencias de cumplimiento de los procedimientos operativos.",
-        "Se gestionan los cambios de manera controlada."
-      ]
-    },
-    {
-      categoria: "Evaluación del desempeño",
-      controles: [
-        "Se realizan auditorías internas periódicas del SGSI.",
-        "La dirección revisa los resultados del SGSI y toma decisiones basadas en evidencia.",
-        "Los indicadores de desempeño son medidos y analizados."
-      ]
-    },
-    {
-      categoria: "Mejora continua",
-      controles: [
-        "Se identifican no conformidades y se implementan acciones correctivas.",
-        "Se promueve la mejora continua del SGSI.",
-        "Las lecciones aprendidas de incidentes se documentan y comunican."
-      ]
-    }
-  ];
-
-  // === Estado con persistencia local ===
-  const [checklist, setChecklist] = useState(() => {
-    const saved = localStorage.getItem("iso27001_checklist");
-    return saved ? JSON.parse(saved) : checklistInicial.map(c => ({
-      ...c,
-      controles: c.controles.map(control => ({ texto: control, cumplido: false }))
-    }));
+export default function ISO27001Checklist() {
+  const [controles, setControles] = useState(() => {
+    const guardado = localStorage.getItem("iso27001_checklist_organizacional");
+    return guardado ? JSON.parse(guardado) : controlesIniciales;
   });
 
   useEffect(() => {
-    localStorage.setItem("iso27001_checklist", JSON.stringify(checklist));
-  }, [checklist]);
+    localStorage.setItem("iso27001_checklist_organizacional", JSON.stringify(controles));
+  }, [controles]);
 
-  // === Manejo del cambio de checkbox ===
-  const toggleControl = (catIndex, ctrlIndex) => {
-    const nuevoChecklist = [...checklist];
-    nuevoChecklist[catIndex].controles[ctrlIndex].cumplido = 
-      !nuevoChecklist[catIndex].controles[ctrlIndex].cumplido;
-    setChecklist(nuevoChecklist);
+  const actualizarCampo = (index, campo, valor) => {
+    const nuevos = [...controles];
+    nuevos[index][campo] = valor;
+    setControles(nuevos);
   };
 
-  const progresoTotal = Math.round(
-    (checklist.flatMap(c => c.controles).filter(ctrl => ctrl.cumplido).length /
-      checklist.flatMap(c => c.controles).length) * 100
-  );
+  const calcularPorcentaje = () => {
+    const total = controles.length;
+    const cumplidos = controles.filter((c) => c.estado === "Cumple").length;
+    return ((cumplidos / total) * 100).toFixed(1);
+  };
 
   return (
-    <div className="iso-container">
-      {/* === Header === */}
-      <header className="iso-header">
-        <div className="brand">
-          <img src={logo} alt="TinCar" className="brand-logo" />
-          <span className="brand-title">TinCar</span>
-        </div>
-        <div className="top-actions">
-          <button className="btn secondary" onClick={() => navigate("/iso27001")}>
-            Volver
-          </button>
-          <button className="btn ghost" onClick={onLogout}>
-            Cerrar sesión
-          </button>
-        </div>
-      </header>
+    <div className="checklist-container">
+      <h1 className="titulo-checklist">Checklist ISO 27001 – Dominio Organizacional</h1>
+      <p className="descripcion-checklist">
+        Evalúa los controles organizacionales según la norma ISO 27001. Los datos se guardan automáticamente en tu navegador.
+      </p>
 
-      {/* === Cuerpo principal === */}
-      <main className="content">
-        <h1>Checklist General — ISO27001</h1>
-        <p>
-          Este checklist te ayudará a evaluar el nivel de cumplimiento de la organización
-          con los requisitos principales de la norma ISO27001:2013/2022.
-        </p>
+      <div className="resumen-progreso">
+        <h3>Progreso general: {calcularPorcentaje()}%</h3>
+        <progress value={calcularPorcentaje()} max="100"></progress>
+      </div>
 
-        {/* === Indicador de progreso === */}
-        <div className="progress-bar">
-          <div className="progress-fill" style={{ width: `${progresoTotal}%` }}>
-            {progresoTotal}%
-          </div>
-        </div>
-
-        {/* === Contenido del checklist === */}
-        <div className="checklist-container">
-          {checklist.map((categoria, catIndex) => (
-            <div key={catIndex} className="checklist-section">
-              <h2>{categoria.categoria}</h2>
-              <ul>
-                {categoria.controles.map((control, ctrlIndex) => (
-                  <li key={ctrlIndex}>
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={control.cumplido}
-                        onChange={() => toggleControl(catIndex, ctrlIndex)}
-                      />
-                      <span>{control.texto}</span>
-                    </label>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-      </main>
+      <div className="tabla-checklist">
+        <table>
+          <thead>
+            <tr>
+              <th>Código</th>
+              <th>Descripción</th>
+              <th>Estado</th>
+              <th>Evidencia</th>
+              <th>Responsable</th>
+              <th>Fecha revisión</th>
+              <th>Observaciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {controles.map((ctrl, i) => (
+              <tr key={i}>
+                <td>{ctrl.codigo}</td>
+                <td>{ctrl.descripcion}</td>
+                <td>
+                  <select
+                    value={ctrl.estado}
+                    onChange={(e) => actualizarCampo(i, "estado", e.target.value)}
+                  >
+                    <option value="">Seleccionar</option>
+                    <option value="Cumple">✅ Cumple</option>
+                    <option value="Parcial">⚠️ Parcial</option>
+                    <option value="No cumple">❌ No cumple</option>
+                    <option value="En proceso">⏳ En proceso</option>
+                  </select>
+                </td>
+                <td>
+                  <input
+                    type="file"
+                    onChange={(e) =>
+                      actualizarCampo(i, "evidencia", e.target.files[0]?.name || "")
+                    }
+                  />
+                  {ctrl.evidencia && <small>{ctrl.evidencia}</small>}
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    value={ctrl.responsable}
+                    placeholder="Nombre"
+                    onChange={(e) => actualizarCampo(i, "responsable", e.target.value)}
+                  />
+                </td>
+                <td>
+                  <input
+                    type="date"
+                    value={ctrl.fecha}
+                    onChange={(e) => actualizarCampo(i, "fecha", e.target.value)}
+                  />
+                </td>
+                <td>
+                  <textarea
+                    value={ctrl.observaciones}
+                    onChange={(e) => actualizarCampo(i, "observaciones", e.target.value)}
+                    placeholder="Comentarios u observaciones"
+                  ></textarea>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
