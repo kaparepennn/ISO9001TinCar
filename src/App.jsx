@@ -6,7 +6,10 @@ import Sidebar from "./components/Sidebar";
 import ISO27001Sidebar from "./components/ISO27001Sidebar";
 import ISO9001Home from "./pages/ISO9001Home";
 import ISO27001Home from "./pages/ISO27001Home";
-import ISO27001Checklist from "./pages/ISO27001Checklist";
+import ChecklistOrganizacionales from "./pages/ChecklistOrganizacionales";
+import ChecklistPersonas from "./pages/ChecklistPersonas";
+import ChecklistFisicos from "./pages/ChecklistFisicos";
+import ChecklistTecnologicos from "./pages/ChecklistTecnologicos";
 import Analisis from "./pages/Analisis";
 import Documentacion from "./pages/Documentacion";
 import MapaProcesos from "./pages/MapaProcesos";
@@ -16,10 +19,8 @@ import Auditoria from "./pages/Auditoria";
 import RegistroEmpresas from "./pages/RegistroEmpresas";
 import UsuariosRoles from "./pages/UsuariosRoles";
 
-// Wrapper del Dashboard principal
 function DashboardWrapper({ user, onLogout }) {
   const navigate = useNavigate();
-
   return (
     <Dashboard
       user={user}
@@ -34,7 +35,6 @@ function DashboardWrapper({ user, onLogout }) {
 
 function App() {
   const [user, setUser] = useState(null);
-
   const handleLogin = (userData) => setUser(userData);
   const handleLogout = () => setUser(null);
 
@@ -44,7 +44,7 @@ function App() {
         <Route path="/" element={!user ? <Login onLogin={handleLogin} /> : <Navigate to="/dashboard" />} />
         <Route path="/dashboard" element={user ? <DashboardWrapper user={user} onLogout={handleLogout} /> : <Navigate to="/" />} />
 
-        {/* ISO9001 con sidebar */}
+        {/* ISO 9001 */}
         <Route
           path="/iso9001/*"
           element={
@@ -68,7 +68,7 @@ function App() {
           }
         />
 
-        {/* ISO27001 con sidebar y dashboard */}
+        {/* ISO 27001 */}
         <Route
           path="/iso27001/*"
           element={
@@ -76,7 +76,10 @@ function App() {
               <ISO27001Sidebar onLogout={handleLogout}>
                 <Routes>
                   <Route index element={<ISO27001Home />} />
-                  <Route path="checklist" element={<ISO27001Checklist />} />
+                  <Route path="organizacionales" element={<ChecklistOrganizacionales />} />
+                  <Route path="personas" element={<ChecklistPersonas />} />
+                  <Route path="fisicos" element={<ChecklistFisicos />} />
+                  <Route path="tecnologicos" element={<ChecklistTecnologicos />} />
                 </Routes>
               </ISO27001Sidebar>
             ) : (

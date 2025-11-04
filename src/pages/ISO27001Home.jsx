@@ -3,95 +3,59 @@ import {
   PieChart,
   Pie,
   Cell,
-  ResponsiveContainer,
   Tooltip,
   Legend,
   BarChart,
   Bar,
   XAxis,
   YAxis,
-  CartesianGrid,
+  ResponsiveContainer,
 } from "recharts";
-import "../styles/index.css";
 
-const COLORS = ["#FFB300", "#E88E2E", "#FFEFCA", "#C0392B"];
+const COLORS = ["#FFB300", "#E88E2E", "#FFEFCA", "#2C2C2C"];
 
 export default function ISO27001Home() {
-  const [dataPie, setDataPie] = useState([]);
-  const [dataBar, setDataBar] = useState([]);
-  const [resumen, setResumen] = useState({});
+  const [data, setData] = useState([]);
 
   useEffect(() => {
-    const controles =
-      JSON.parse(localStorage.getItem("iso27001_checklist_organizacional")) || [];
-    const total = controles.length || 1;
-    const estados = {
-      cumple: controles.filter((c) => c.estado === "Cumple").length,
-      parcial: controles.filter((c) => c.estado === "Parcial").length,
-      noCumple: controles.filter((c) => c.estado === "No cumple").length,
-      proceso: controles.filter((c) => c.estado === "En proceso").length,
-    };
-
-    setResumen({
-      total,
-      ...estados,
-      porcentaje: ((estados.cumple / total) * 100).toFixed(1),
+    const dominios = ["organizacional", "personas", "fisico", "tecnologico"];
+    const resumen = dominios.map((dominio) => {
+      const lista = JSON.parse(localStorage.getItem(`iso27001_checklist_${dominio}`)) || [];
+      const total = lista.length || 0;
+      const cumple = lista.filter((x) => x.estado === "Cumple").length;
+      const parcial = lista.filter((x) => x.estado === "Parcial").length;
+      const noCumple = lista.filter((x) => x.estado === "No cumple").length;
+      const enProceso = lista.filter((x) => x.estado === "En proceso").length;
+      return {
+        dominio,
+        total,
+        cumple,
+        parcial,
+        noCumple,
+        enProceso,
+      };
     });
-
-    setDataPie([
-      { name: "Cumple", value: estados.cumple },
-      { name: "Parcial", value: estados.parcial },
-      { name: "No cumple", value: estados.noCumple },
-      { name: "En proceso", value: estados.proceso },
-    ]);
-
-    setDataBar([
-      { estado: "Cumple", cantidad: estados.cumple },
-      { estado: "Parcial", cantidad: estados.parcial },
-      { estado: "No cumple", cantidad: estados.noCumple },
-      { estado: "En proceso", cantidad: estados.proceso },
-    ]);
+    setData(resumen);
   }, []);
+
+  const pieData = data.map((d) => ({
+    name: d.dominio.charAt(0).toUpperCase() + d.dominio.slice(1),
+    value: d.cumple,
+  }));
 
   return (
     <div className="iso-dashboard">
       <h1>Dashboard ISO 27001</h1>
-      <p>
-        Tablero general con el estado actual de cumplimiento basado en los
-        controles registrados en el checklist.
-      </p>
+      <p>Monitoreo general de cumplimiento basado en los checklists de cada dominio.</p>
 
-      {/* === Indicador de progreso general === */}
-      <div className="dashboard-progress">
-        <h3>Cumplimiento general: {resumen.porcentaje || 0}%</h3>
-        <progress
-          value={resumen.porcentaje || 0}
-          max="100"
-          className="progress-bar"
-        ></progress>
-      </div>
-
-      {/* === Contenedores de gráficos alineados === */}
-      <div className="charts-row">
-        {/* === Gráfico de torta === */}
+      <div className="charts-container">
         <div className="chart-box">
-          <h3>Distribución porcentual</h3>
+          <h3>Cumplimiento General</h3>
           <ResponsiveContainer width="100%" height={300}>
             <PieChart>
-              <Pie
-                data={dataPie}
-                cx="50%"
-                cy="50%"
-                outerRadius={100}
-                dataKey="value"
-                label
-              >
-                {dataPie.map((entry, index) => (
-                  <Cell
-                    key={index}
-                    fill={COLORS[index % COLORS.length]}
-                    stroke="#1A1919"
-                  />
+              <Pie data={pieData} cx="50%" cy="50%" outerRadius={100} dataKey="value" label>
+                {pieData.map((entry, i) => (
+                  <Cell key={i} fill={COLORS[i % COLORS.length]} />
                 ))}
               </Pie>
               <Tooltip />
@@ -100,42 +64,20 @@ export default function ISO27001Home() {
           </ResponsiveContainer>
         </div>
 
-        {/* === Gráfico de barras === */}
         <div className="chart-box">
-          <h3>Controles por estado</h3>
+          <h3>Estado por Dominio</h3>
           <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={dataBar}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#555" />
-              <XAxis dataKey="estado" stroke="#FFB300" />
+            <BarChart data={data}>
+              <XAxis dataKey="dominio" stroke="#FFB300" />
               <YAxis stroke="#FFB300" />
               <Tooltip />
-              <Bar dataKey="cantidad" fill="#E88E2E" barSize={50} />
+              <Legend />
+              <Bar dataKey="cumple" fill="#FFB300" name="Cumple" />
+              <Bar dataKey="parcial" fill="#E88E2E" name="Parcial" />
+              <Bar dataKey="noCumple" fill="#d9534f" name="No cumple" />
+              <Bar dataKey="enProceso" fill="#999" name="En proceso" />
             </BarChart>
           </ResponsiveContainer>
-        </div>
-      </div>
-
-      {/* === Resumen numérico general === */}
-      <div className="resumen-dashboard">
-        <div className="card">
-          <h4>Total de controles</h4>
-          <p>{resumen.total || 0}</p>
-        </div>
-        <div className="card">
-          <h4>Cumple</h4>
-          <p>{resumen.cumple || 0}</p>
-        </div>
-        <div className="card">
-          <h4>Parcial</h4>
-          <p>{resumen.parcial || 0}</p>
-        </div>
-        <div className="card">
-          <h4>No cumple</h4>
-          <p>{resumen.noCumple || 0}</p>
-        </div>
-        <div className="card">
-          <h4>En proceso</h4>
-          <p>{resumen.proceso || 0}</p>
         </div>
       </div>
     </div>
