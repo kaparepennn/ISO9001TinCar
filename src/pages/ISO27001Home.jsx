@@ -1,59 +1,51 @@
 import React, { useEffect, useState } from "react";
-import {
-  PieChart,
-  Pie,
-  Cell,
-  Tooltip,
-  Legend,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  ResponsiveContainer,
-} from "recharts";
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend, BarChart, Bar, XAxis, YAxis, CartesianGrid } from "recharts";
 
-const COLORS = ["#FFB300", "#E88E2E", "#FFEFCA", "#2C2C2C"];
+const COLORS = ["#FFB300", "#E88E2E", "#FFEFCA", "#8884d8"];
 
 export default function ISO27001Home() {
-  const [data, setData] = useState([]);
+  const [stats, setStats] = useState({
+    Organizacionales: 0,
+    Personas: 0,
+    Fisicos: 0,
+    Tecnologicos: 0,
+  });
 
   useEffect(() => {
     const dominios = ["organizacional", "personas", "fisico", "tecnologico"];
-    const resumen = dominios.map((dominio) => {
-      const lista = JSON.parse(localStorage.getItem(`iso27001_checklist_${dominio}`)) || [];
-      const total = lista.length || 0;
-      const cumple = lista.filter((x) => x.estado === "Cumple").length;
-      const parcial = lista.filter((x) => x.estado === "Parcial").length;
-      const noCumple = lista.filter((x) => x.estado === "No cumple").length;
-      const enProceso = lista.filter((x) => x.estado === "En proceso").length;
-      return {
-        dominio,
-        total,
-        cumple,
-        parcial,
-        noCumple,
-        enProceso,
-      };
+    const resumen = {};
+
+    dominios.forEach((d) => {
+      const data = JSON.parse(localStorage.getItem(`iso27001_checklist_${d}`)) || [];
+      if (data.length === 0) resumen[d] = 0;
+      else {
+        const total = data.length;
+        const cumple = data.filter((x) => x.estado === "Cumple").length;
+        resumen[d] = Math.round((cumple / total) * 100);
+      }
     });
-    setData(resumen);
+
+    setStats({
+      Organizacionales: resumen.organizacional || 0,
+      Personas: resumen.personas || 0,
+      Fisicos: resumen.fisico || 0,
+      Tecnologicos: resumen.tecnologico || 0,
+    });
   }, []);
 
-  const pieData = data.map((d) => ({
-    name: d.dominio.charAt(0).toUpperCase() + d.dominio.slice(1),
-    value: d.cumple,
-  }));
+  const pieData = Object.entries(stats).map(([name, value]) => ({ name, value }));
 
   return (
     <div className="iso-dashboard">
       <h1>Dashboard ISO 27001</h1>
-      <p>Monitoreo general de cumplimiento basado en los checklists de cada dominio.</p>
+      <p>Estado general de cumplimiento basado en los checklists de cada dominio.</p>
 
-      <div className="charts-container">
+      <div className="chart-container">
         <div className="chart-box">
-          <h3>Cumplimiento General</h3>
+          <h3>Distribución General</h3>
           <ResponsiveContainer width="100%" height={300}>
             <PieChart>
-              <Pie data={pieData} cx="50%" cy="50%" outerRadius={100} dataKey="value" label>
+              <Pie data={pieData} dataKey="value" outerRadius={100} label>
                 {pieData.map((entry, i) => (
                   <Cell key={i} fill={COLORS[i % COLORS.length]} />
                 ))}
@@ -65,17 +57,14 @@ export default function ISO27001Home() {
         </div>
 
         <div className="chart-box">
-          <h3>Estado por Dominio</h3>
+          <h3>Resumen por Categoría (%)</h3>
           <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={data}>
-              <XAxis dataKey="dominio" stroke="#FFB300" />
-              <YAxis stroke="#FFB300" />
+            <BarChart data={pieData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis domain={[0, 100]} />
               <Tooltip />
-              <Legend />
-              <Bar dataKey="cumple" fill="#FFB300" name="Cumple" />
-              <Bar dataKey="parcial" fill="#E88E2E" name="Parcial" />
-              <Bar dataKey="noCumple" fill="#d9534f" name="No cumple" />
-              <Bar dataKey="enProceso" fill="#999" name="En proceso" />
+              <Bar dataKey="value" fill="#FFB300" />
             </BarChart>
           </ResponsiveContainer>
         </div>
