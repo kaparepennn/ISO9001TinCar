@@ -9,7 +9,7 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
   },
-  "homepage": "https://kaparepennn.github.io/iso9001tincar/",
+  "homepage": "https://kaparepennn.github.io/ISO9001TinCar/",
   "dependencies": {
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
